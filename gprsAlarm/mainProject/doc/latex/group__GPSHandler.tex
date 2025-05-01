@@ -1,0 +1,113 @@
+\hypertarget{group__GPSHandler}{}\doxysection{Functions to handle G\+PS comunication}
+\label{group__GPSHandler}\index{Functions to handle GPS comunication@{Functions to handle GPS comunication}}
+
+
+Reading location using Tiny\+G\+P\+S++ module.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{group__GPSHandler_ga923f6ce1f891b777cad9521733e29ffb}{show\+Gps}} ()
+\begin{DoxyCompactList}\small\item\em Store G\+PS coords. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__GPSHandler_ga05a3d705d8063851304bb49200834d1b}{read\+G\+PS}} ()
+\begin{DoxyCompactList}\small\item\em Reading G\+PS info on serial. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__GPSHandler_gaa3eb0cb2cae94aa40f0d3e66011f6832}{get\+Position}} ()
+\begin{DoxyCompactList}\small\item\em Handle G\+PS comunication. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Reading location using Tiny\+G\+P\+S++ module. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__GPSHandler_gaa3eb0cb2cae94aa40f0d3e66011f6832}\label{group__GPSHandler_gaa3eb0cb2cae94aa40f0d3e66011f6832}} 
+\index{Functions to handle GPS comunication@{Functions to handle GPS comunication}!getPosition@{getPosition}}
+\index{getPosition@{getPosition}!Functions to handle GPS comunication@{Functions to handle GPS comunication}}
+\doxysubsubsection{\texorpdfstring{getPosition()}{getPosition()}}
+{\footnotesize\ttfamily bool get\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Handle G\+PS comunication. 
+
+turn G\+PS on with A\+T+\+G\+P\+S\+RD=1
+
+after read\+G\+PS call turn G\+PS off with A\+T+\+G\+P\+S\+RD=1
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__GPSHandler_ga05a3d705d8063851304bb49200834d1b}{read\+G\+PS}}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true if all commands executed right and last\+Pos was updated) \\
+\hline
+\end{DoxyRetVals}
+turn G\+PS on
+
+read data
+
+turn G\+PS off
+
+flush Serial
+
+return\mbox{\Hypertarget{group__GPSHandler_ga05a3d705d8063851304bb49200834d1b}\label{group__GPSHandler_ga05a3d705d8063851304bb49200834d1b}} 
+\index{Functions to handle GPS comunication@{Functions to handle GPS comunication}!readGPS@{readGPS}}
+\index{readGPS@{readGPS}!Functions to handle GPS comunication@{Functions to handle GPS comunication}}
+\doxysubsubsection{\texorpdfstring{readGPS()}{readGPS()}}
+{\footnotesize\ttfamily bool read\+G\+PS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reading G\+PS info on serial. 
+
+listens for 10s
+
+then validate data
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__GPSHandler_ga923f6ce1f891b777cad9521733e29ffb}{show\+Gps}}
+\end{DoxySeeAlso}
+will flush remaining data on Serial
+
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true if recieved location is valid) \\
+\hline
+\end{DoxyRetVals}
+check if word makes position valid, if yes break\mbox{\Hypertarget{group__GPSHandler_ga923f6ce1f891b777cad9521733e29ffb}\label{group__GPSHandler_ga923f6ce1f891b777cad9521733e29ffb}} 
+\index{Functions to handle GPS comunication@{Functions to handle GPS comunication}!showGps@{showGps}}
+\index{showGps@{showGps}!Functions to handle GPS comunication@{Functions to handle GPS comunication}}
+\doxysubsubsection{\texorpdfstring{showGps()}{showGps()}}
+{\footnotesize\ttfamily bool show\+Gps (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Store G\+PS coords. 
+
+Read location in tiny\+Gps++ object module\+Gps
+
+won\textquotesingle{}t turn G\+PS on, only checks already loaded value
+
+stores into global variable last\+Pos if valid
+
+before storing new value wipes last\+Pos with 0
+
+N/S L\+AT W/E L\+O\+NG
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true if location was valid by tiny\+G\+P\+S++) \\
+\hline
+\end{DoxyRetVals}

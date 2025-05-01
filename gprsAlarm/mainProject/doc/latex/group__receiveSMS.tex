@@ -1,0 +1,88 @@
+\hypertarget{group__receiveSMS}{}\doxysection{All steps to read S\+MS}
+\label{group__receiveSMS}\index{All steps to read SMS@{All steps to read SMS}}
+
+
+Listening on RX and parsing input, to check if S\+MS came.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{group__receiveSMS_ga5bca434334b1eb05b1396056cb0d2194}{receive\+S\+M\+S\+Body}} (char $\ast$message\+Body, const unsigned char body\+Limit)
+\begin{DoxyCompactList}\small\item\em Read S\+MS and ignore control characters. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__receiveSMS_ga36750cb124b7048d05ee0aa68605a84e}{receive\+S\+MS}} (char $\ast$message, const unsigned char message\+Length)
+\begin{DoxyCompactList}\small\item\em Handle recieving S\+MS. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Listening on RX and parsing input, to check if S\+MS came. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__receiveSMS_ga36750cb124b7048d05ee0aa68605a84e}\label{group__receiveSMS_ga36750cb124b7048d05ee0aa68605a84e}} 
+\index{All steps to read SMS@{All steps to read SMS}!receiveSMS@{receiveSMS}}
+\index{receiveSMS@{receiveSMS}!All steps to read SMS@{All steps to read SMS}}
+\doxysubsubsection{\texorpdfstring{receiveSMS()}{receiveSMS()}}
+{\footnotesize\ttfamily bool receive\+S\+MS (\begin{DoxyParamCaption}\item[{char $\ast$}]{message,  }\item[{const unsigned char}]{message\+Length }\end{DoxyParamCaption})}
+
+
+
+Handle recieving S\+MS. 
+
+listens on RX for 10s
+
+check for \textquotesingle{}+C\+MT\+: "{}number\textquotesingle{}
+
+\char`\"{}number\char`\"{} is global variable, can be empty, then only \textquotesingle{}+C\+MT\+: "{} \textquotesingle{} is checked
+
+after recieving number will jump over 3x \textquotesingle{} "{} \textquotesingle{} to get to message body
+
+(+C\+MT\+: \char`\"{}number\char`\"{},,\char`\"{}time\char`\"{})
+
+flushes serials after returning from receive\+S\+M\+S\+Body function
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__receiveSMS_ga5bca434334b1eb05b1396056cb0d2194}{receive\+S\+M\+S\+Body}}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em message} & -\/ buffer for storing message text\\
+\hline
+\mbox{\texttt{ in}}  & {\em message\+Length} & -\/ size of output buffer\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & if receive\+S\+M\+S\+Body returns true \\
+\hline
+{\em false} & after 10s timeout \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__receiveSMS_ga5bca434334b1eb05b1396056cb0d2194}\label{group__receiveSMS_ga5bca434334b1eb05b1396056cb0d2194}} 
+\index{All steps to read SMS@{All steps to read SMS}!receiveSMSBody@{receiveSMSBody}}
+\index{receiveSMSBody@{receiveSMSBody}!All steps to read SMS@{All steps to read SMS}}
+\doxysubsubsection{\texorpdfstring{receiveSMSBody()}{receiveSMSBody()}}
+{\footnotesize\ttfamily bool receive\+S\+M\+S\+Body (\begin{DoxyParamCaption}\item[{char $\ast$}]{message\+Body,  }\item[{const unsigned char}]{body\+Limit }\end{DoxyParamCaption})}
+
+
+
+Read S\+MS and ignore control characters. 
+
+reads directly from RX
+
+1sec loop is used to not outrun serial reading
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em message\+Body} & -\/ buffer for storing message text\\
+\hline
+\mbox{\texttt{ in}}  & {\em body\+Limit} & -\/ size of output buffer\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (false if there are still data and\+: buffer is full or after 1s timeot) \\
+\hline
+\end{DoxyRetVals}
+jump over not printable text characters or not space

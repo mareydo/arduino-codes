@@ -1,0 +1,57 @@
+/** @mainpage
+ *  <h2>ABOUT</h2>
+ *  <p>Simple alarm detecting vibrations from sensor(can be changed for any type of sensor).
+ *     Uses SMS to comunicate with set up mobile number. 
+ *     After init waits for initSMS in format: +123456789012 - 0000  (number - password)
+ *     and accepts comands only from given "number" and deactivates alarm only by given "password"
+ *     </p>
+ *  <h2>LIBRARIES</h2>
+ *  <p>using AltSoftSerial and TinyGPS libraries
+ *  zip files included in folder ./libraries</p>
+ *  <a href="https://github.com/PaulStoffregen/AltSoftSerial">AltSoftSerial</a> 
+ *  <a href="https://github.com/mikalhart/TinyGPSPlus/releases">TinyGPS++</a>  
+ *
+ *  <h2>PIN LAYOUT</h2>
+ *  <table>
+ *  <tr>
+ *   <th>Arduino</th>
+ *   <th>Periferies</th>
+ *  </tr> 
+ *  <tr>
+ *    <td>RELAY=6</td>
+ *    <td>RELAY COM</td>
+ *  </tr>
+ *  <tr>
+ *    <td>PWR=7</td>
+ *    <td>MODULE PWR_KEY</td>
+ *  </tr>
+ *  <tr>
+ *    <td>RX=8</td>
+ *    <td>MODULE TX</td>
+ *  </tr>
+ *  <tr>
+ *    <td>TX=9</td>
+ *    <td>MODULE RX</td>
+ *  </tr>
+ *  </table>
+ *  <h2>UI</h2>
+ *  <h3>Commands</h3>
+ *  <ul>
+ *    <li>#GPS - show gps coords</li>
+ *    <li>#ALARM - turn alarm on</li>
+ *    <li>password - turn alarm off</li>
+ *  </ul> 
+ *  <h2>I/O</h2>
+ *  <ul>
+ *    <li>if fatal error happens during init, builtin led turns on</li>
+ *    <li>if init is correct, builtin led blinks 10 times</li>
+ *    <li>comunicates only with given number</li>
+ *    <li>comunicates only trough SMS</li>
+ *  </ul>  
+ *  
+ *  <h2>MODULE LIMITATIONS</h2>
+ *    <p>during init is safer to watch module built in LED to check correct turn on<br>
+ *    if no sms comes, send command again<br>
+ *    comunication is set on 9600bauds, can be changed with AT+IPR=9600 (factory value is 115200 <- not safe to use) <br>
+ *    module need 2A at peak <= needs to be plugged separatly, wont keeep many external chargers on by itself</p>
+ */

@@ -1,0 +1,112 @@
+\hypertarget{group__atFunctions}{}\doxysection{Functions handling AT commands}
+\label{group__atFunctions}\index{Functions handling AT commands@{Functions handling AT commands}}
+
+
+Sending/\+Receiving AT commands, flushing RX Serial buffers.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__atFunctions_ga8e6273394beab9e077e91353924228fc}{flush\+Serials}} ()
+\begin{DoxyCompactList}\small\item\em Clearing RX buffers. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__atFunctions_ga6a88c2d3465f13549eb2358e3606ae11}{receive\+AT}} (const char $\ast$response)
+\begin{DoxyCompactList}\small\item\em Recieving AT command. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__atFunctions_ga02c57e110103fc1018806dfeb3d8ef07}{send\+AT}} (const char $\ast$command, const char $\ast$response, const bool one\+Try=false)
+\begin{DoxyCompactList}\small\item\em sending AT commands \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Sending/\+Receiving AT commands, flushing RX Serial buffers. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__atFunctions_ga8e6273394beab9e077e91353924228fc}\label{group__atFunctions_ga8e6273394beab9e077e91353924228fc}} 
+\index{Functions handling AT commands@{Functions handling AT commands}!flushSerials@{flushSerials}}
+\index{flushSerials@{flushSerials}!Functions handling AT commands@{Functions handling AT commands}}
+\doxysubsubsection{\texorpdfstring{flushSerials()}{flushSerials()}}
+{\footnotesize\ttfamily void flush\+Serials (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Clearing RX buffers. 
+
+reading in loop all available characters
+
+delay is used to not outrun incoming comunication ~\newline
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em void} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__atFunctions_ga6a88c2d3465f13549eb2358e3606ae11}\label{group__atFunctions_ga6a88c2d3465f13549eb2358e3606ae11}} 
+\index{Functions handling AT commands@{Functions handling AT commands}!receiveAT@{receiveAT}}
+\index{receiveAT@{receiveAT}!Functions handling AT commands@{Functions handling AT commands}}
+\doxysubsubsection{\texorpdfstring{receiveAT()}{receiveAT()}}
+{\footnotesize\ttfamily bool receive\+AT (\begin{DoxyParamCaption}\item[{const char $\ast$}]{response }\end{DoxyParamCaption})}
+
+
+
+Recieving AT command. 
+
+check if command includes response
+
+maximal read length is M\+A\+X\+\_\+\+B\+U\+F\+F\+ER -\/1
+
+function end reading Serial if string is found or buffer is filled
+
+won\textquotesingle{}t flush reminding data on RX
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em response} & -\/ substring to check in incomming string, can be N\+U\+LL for not testing\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & if command include response\\
+\hline
+{\em false} & if no command is send or response is longer than M\+A\+X\+\_\+\+B\+U\+F\+F\+ER -\/ 1 \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__atFunctions_ga02c57e110103fc1018806dfeb3d8ef07}\label{group__atFunctions_ga02c57e110103fc1018806dfeb3d8ef07}} 
+\index{Functions handling AT commands@{Functions handling AT commands}!sendAT@{sendAT}}
+\index{sendAT@{sendAT}!Functions handling AT commands@{Functions handling AT commands}}
+\doxysubsubsection{\texorpdfstring{sendAT()}{sendAT()}}
+{\footnotesize\ttfamily bool send\+AT (\begin{DoxyParamCaption}\item[{const char $\ast$}]{command,  }\item[{const char $\ast$}]{response,  }\item[{const bool}]{one\+Try = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+sending AT commands 
+
+flushes serials before and after
+
+command is tried 10 times with 3s window for response
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em command} & -\/ command to send\\
+\hline
+\mbox{\texttt{ in}}  & {\em response} & -\/ module must respond that phrase somewhere in output\\
+\hline
+\mbox{\texttt{ in}}  & {\em one\+Try} & -\/ true to try send command only once\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & if command was send and properly answered\\
+\hline
+{\em false} & 10 incorrect sendings \\
+\hline
+\end{DoxyRetVals}
+time for response 3s
+
+700ms delay between tries

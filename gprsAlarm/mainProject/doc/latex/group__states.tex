@@ -1,0 +1,83 @@
+\hypertarget{group__states}{}\doxysection{The automata states}
+\label{group__states}\index{The automata states@{The automata states}}
+
+
+Main program loop is divided into several states of automata.  
+
+
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}} \{ \newline
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647a7baf0f057c5fb39157b91344217bf5fb}{S\+E\+T\+U\+P\+\_\+\+F\+E\+T\+CH}}, 
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647a21da00c3513901c3b613bc41df1aa0ea}{S\+I\+G\+N\+A\+L\+\_\+\+F\+E\+T\+CH}}, 
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647a35265ab9558faedd2623e21a577e1231}{G\+E\+T\+\_\+\+G\+PS}}, 
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647aefd5f397703509311a5b357b1d978e9d}{A\+L\+A\+R\+M\+\_\+\+T\+R\+I\+G\+G\+E\+R\+ED}}, 
+\newline
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647a3794f36ef32b358c1c6454de6076e833}{A\+L\+A\+R\+M\+\_\+\+ON}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}} \mbox{\hyperlink{group__states_ga83c3645ae93efa709997a0e29ff5f598}{A\+C\+T\+\_\+\+S\+T\+A\+TE}}
+\item 
+\mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}} \mbox{\hyperlink{group__states_ga81858cdd96d3029886bffb1d8ea0f8fb}{N\+E\+X\+T\+\_\+\+S\+T\+A\+TE}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main program loop is divided into several states of automata. 
+
+
+\begin{DoxyItemize}
+\item \begin{DoxySeeAlso}{See also}
+project folder/doc/states.\+png 
+\end{DoxySeeAlso}
+
+\end{DoxyItemize}
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{group__states_ga275a67132f10277ada3a0ee3d616b647}\label{group__states_ga275a67132f10277ada3a0ee3d616b647}} 
+\index{The automata states@{The automata states}!STATE@{STATE}}
+\index{STATE@{STATE}!The automata states@{The automata states}}
+\doxysubsubsection{\texorpdfstring{STATE}{STATE}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}}}
+
+Internal states of finite automata \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SETUP\_FETCH@{SETUP\_FETCH}!The automata states@{The automata states}}\index{The automata states@{The automata states}!SETUP\_FETCH@{SETUP\_FETCH}}}\mbox{\Hypertarget{group__states_gga275a67132f10277ada3a0ee3d616b647a7baf0f057c5fb39157b91344217bf5fb}\label{group__states_gga275a67132f10277ada3a0ee3d616b647a7baf0f057c5fb39157b91344217bf5fb}} 
+S\+E\+T\+U\+P\+\_\+\+F\+E\+T\+CH&Wait for init\+S\+MS with mobile number and password \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SIGNAL\_FETCH@{SIGNAL\_FETCH}!The automata states@{The automata states}}\index{The automata states@{The automata states}!SIGNAL\_FETCH@{SIGNAL\_FETCH}}}\mbox{\Hypertarget{group__states_gga275a67132f10277ada3a0ee3d616b647a21da00c3513901c3b613bc41df1aa0ea}\label{group__states_gga275a67132f10277ada3a0ee3d616b647a21da00c3513901c3b613bc41df1aa0ea}} 
+S\+I\+G\+N\+A\+L\+\_\+\+F\+E\+T\+CH&Wait for S\+MS or shake sensor input \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{GET\_GPS@{GET\_GPS}!The automata states@{The automata states}}\index{The automata states@{The automata states}!GET\_GPS@{GET\_GPS}}}\mbox{\Hypertarget{group__states_gga275a67132f10277ada3a0ee3d616b647a35265ab9558faedd2623e21a577e1231}\label{group__states_gga275a67132f10277ada3a0ee3d616b647a35265ab9558faedd2623e21a577e1231}} 
+G\+E\+T\+\_\+\+G\+PS&Read G\+PS data from module and sending it in S\+MS (valid or last valid) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ALARM\_TRIGGERED@{ALARM\_TRIGGERED}!The automata states@{The automata states}}\index{The automata states@{The automata states}!ALARM\_TRIGGERED@{ALARM\_TRIGGERED}}}\mbox{\Hypertarget{group__states_gga275a67132f10277ada3a0ee3d616b647aefd5f397703509311a5b357b1d978e9d}\label{group__states_gga275a67132f10277ada3a0ee3d616b647aefd5f397703509311a5b357b1d978e9d}} 
+A\+L\+A\+R\+M\+\_\+\+T\+R\+I\+G\+G\+E\+R\+ED&Send S\+MS that alarm is triggered and gps coords \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ALARM\_ON@{ALARM\_ON}!The automata states@{The automata states}}\index{The automata states@{The automata states}!ALARM\_ON@{ALARM\_ON}}}\mbox{\Hypertarget{group__states_gga275a67132f10277ada3a0ee3d616b647a3794f36ef32b358c1c6454de6076e833}\label{group__states_gga275a67132f10277ada3a0ee3d616b647a3794f36ef32b358c1c6454de6076e833}} 
+A\+L\+A\+R\+M\+\_\+\+ON&Turn relay(alarm) on and wait for S\+MS with password \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{group__states_ga83c3645ae93efa709997a0e29ff5f598}\label{group__states_ga83c3645ae93efa709997a0e29ff5f598}} 
+\index{The automata states@{The automata states}!ACT\_STATE@{ACT\_STATE}}
+\index{ACT\_STATE@{ACT\_STATE}!The automata states@{The automata states}}
+\doxysubsubsection{\texorpdfstring{ACT\_STATE}{ACT\_STATE}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}} A\+C\+T\+\_\+\+S\+T\+A\+TE}
+
+\mbox{\Hypertarget{group__states_ga81858cdd96d3029886bffb1d8ea0f8fb}\label{group__states_ga81858cdd96d3029886bffb1d8ea0f8fb}} 
+\index{The automata states@{The automata states}!NEXT\_STATE@{NEXT\_STATE}}
+\index{NEXT\_STATE@{NEXT\_STATE}!The automata states@{The automata states}}
+\doxysubsubsection{\texorpdfstring{NEXT\_STATE}{NEXT\_STATE}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}} N\+E\+X\+T\+\_\+\+S\+T\+A\+TE}
+

@@ -1,0 +1,75 @@
+\hypertarget{GPRSModule_8cpp}{}\doxysection{D\+:/\+Libraries/\+Documents/\+Arduino/sms\+\_\+alarm\+\_\+marecja9/sketch/\+G\+P\+R\+S\+Module.cpp File Reference}
+\label{GPRSModule_8cpp}\index{D:/Libraries/Documents/Arduino/sms\_alarm\_marecja9/sketch/GPRSModule.cpp@{D:/Libraries/Documents/Arduino/sms\_alarm\_marecja9/sketch/GPRSModule.cpp}}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group__globalVariables_ga1d5dab30b404fab91608086105afc78c}{M\+A\+X\+\_\+\+B\+U\+F\+F\+ER}}~60
+\item 
+\#define \mbox{\hyperlink{group__globalVariables_ga1834f18cf97a55f3b17769a856998e6a}{N\+U\+M\+\_\+\+L\+EN}}~13
+\item 
+\#define \mbox{\hyperlink{group__globalVariables_gada3f0d53dd4623f0d73cf7663f01a747}{P\+S\+W\+D\+\_\+\+L\+EN}}~4
+\item 
+\#define \mbox{\hyperlink{group__globalVariables_ga59752205a31c36354173231ec2c01683}{P\+O\+S\+\_\+\+L\+EN}}~22
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Tiny\+G\+P\+S\+Custom \mbox{\hyperlink{group__globalVariables_ga26515489f24c2d7566d84b0f20ada5d5}{lat\+Letter}} (\mbox{\hyperlink{group__globalVariables_gad9ba7ea679e8b460076c82a77eba69c2}{module\+G\+PS}}, \char`\"{}G\+P\+G\+GA\char`\"{}, 3)
+\item 
+Tiny\+G\+P\+S\+Custom \mbox{\hyperlink{group__globalVariables_ga13d801a6b756444459c23534809469a0}{lng\+Letter}} (\mbox{\hyperlink{group__globalVariables_gad9ba7ea679e8b460076c82a77eba69c2}{module\+G\+PS}}, \char`\"{}G\+P\+G\+GA\char`\"{}, 5)
+\item 
+void \mbox{\hyperlink{group__delay_ga8afdfdac1fabf0d40400f2786eb974e6}{delay\+Custom}} (const unsigned int ms)
+\begin{DoxyCompactList}\small\item\em Waiting for defined time. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__atFunctions_ga8e6273394beab9e077e91353924228fc}{flush\+Serials}} ()
+\begin{DoxyCompactList}\small\item\em Clearing RX buffers. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__atFunctions_ga6a88c2d3465f13549eb2358e3606ae11}{receive\+AT}} (const char $\ast$response)
+\begin{DoxyCompactList}\small\item\em Recieving AT command. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__atFunctions_ga02c57e110103fc1018806dfeb3d8ef07}{send\+AT}} (const char $\ast$command, const char $\ast$response, const bool one\+Try=false)
+\begin{DoxyCompactList}\small\item\em sending AT commands \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__initFunctions_ga20c4e046a45d5ec9a92a25becabaee42}{dump\+Init\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Deleting initial data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__initFunctions_ga4c3b7689564254274a0e3a2a1771d473}{init\+Pins}} ()
+\begin{DoxyCompactList}\small\item\em Basic Pin and Object initialisation. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__initFunctions_ga4282795f146846b5b3c9b79a8897c34f}{handshake}} ()
+\begin{DoxyCompactList}\small\item\em Do handshake with module. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__initFunctions_ga3e9751fdc33af7667c587540ef9cfe7b}{init\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Initial setup of module. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__sendSMS_ga57c39446b495c2def59c48f08acc594c}{init\+Send\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Initial setup for sending S\+MS. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__sendSMS_gaea00cb89bfccfa0992c273c508b922b2}{send\+S\+MS}} (const char $\ast$message)
+\begin{DoxyCompactList}\small\item\em Handle S\+MS sending. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__receiveSMS_ga5bca434334b1eb05b1396056cb0d2194}{receive\+S\+M\+S\+Body}} (char $\ast$message\+Body, const unsigned char body\+Limit)
+\begin{DoxyCompactList}\small\item\em Read S\+MS and ignore control characters. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__receiveSMS_ga36750cb124b7048d05ee0aa68605a84e}{receive\+S\+MS}} (char $\ast$message, const unsigned char message\+Length)
+\begin{DoxyCompactList}\small\item\em Handle recieving S\+MS. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__GPSHandler_ga923f6ce1f891b777cad9521733e29ffb}{show\+Gps}} ()
+\begin{DoxyCompactList}\small\item\em Store G\+PS coords. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__GPSHandler_ga05a3d705d8063851304bb49200834d1b}{read\+G\+PS}} ()
+\begin{DoxyCompactList}\small\item\em Reading G\+PS info on serial. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__GPSHandler_gaa3eb0cb2cae94aa40f0d3e66011f6832}{get\+Position}} ()
+\begin{DoxyCompactList}\small\item\em Handle G\+PS comunication. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__Parsers_ga38f8c4a55ae8c832603200b7d0b95c05}{check\+Format}} (const char $\ast$str)
+\begin{DoxyCompactList}\small\item\em Check init\+S\+MS format. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__Parsers_gae9badbde2f5955b6b0d9688ca4109dba}{parse\+Init\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Parse initialization S\+MS. \end{DoxyCompactList}\item 
+char \mbox{\hyperlink{group__Parsers_gace8579ec79516d545b7b7f17024b2905}{parse\+Control\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Parse received S\+MS as menu switch. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Parsers_gad0707d3f759288b0ab278b15a5ba5b2a}{send\+Coords\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Get position and send it in S\+MS. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__Parsers_gaef689ab337956e614d91619f46e76555}{received\+Password\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Read S\+MS to disable alarm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char \mbox{\hyperlink{group__globalVariables_ga86f75d0bc1e135a061ac9b4bd1ce6866}{number}} \mbox{[}\mbox{\hyperlink{group__globalVariables_ga1834f18cf97a55f3b17769a856998e6a}{N\+U\+M\+\_\+\+L\+EN}}+1\mbox{]} = \{0\}
+\item 
+char \mbox{\hyperlink{group__globalVariables_gad5f94ec9e491f91f6f0503da06695442}{password}} \mbox{[}\mbox{\hyperlink{group__globalVariables_gada3f0d53dd4623f0d73cf7663f01a747}{P\+S\+W\+D\+\_\+\+L\+EN}}+1\mbox{]} = \{0\}
+\item 
+char \mbox{\hyperlink{group__globalVariables_ga0d555b7a5d892dcce9fe9a66399fc31a}{last\+Pos}} \mbox{[}\mbox{\hyperlink{group__globalVariables_ga59752205a31c36354173231ec2c01683}{P\+O\+S\+\_\+\+L\+EN}}+1\mbox{]} = \{0\}
+\item 
+byte \mbox{\hyperlink{group__globalVariables_ga15f2cb3617e5a866552e3de39300e9a4}{P\+WR}} = 7
+\item 
+Alt\+Soft\+Serial \mbox{\hyperlink{group__globalVariables_ga4b95bcca6a725c07bf5e7803768a40e5}{module\+Serial}}
+\item 
+Tiny\+G\+P\+S\+Plus \mbox{\hyperlink{group__globalVariables_gad9ba7ea679e8b460076c82a77eba69c2}{module\+G\+PS}}
+\end{DoxyCompactItemize}

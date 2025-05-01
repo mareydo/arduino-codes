@@ -1,0 +1,77 @@
+\hypertarget{group__sendSMS}{}\doxysection{All steps to send S\+MS}
+\label{group__sendSMS}\index{All steps to send SMS@{All steps to send SMS}}
+
+
+Functions to setup module and send S\+MS.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{group__sendSMS_ga57c39446b495c2def59c48f08acc594c}{init\+Send\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Initial setup for sending S\+MS. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__sendSMS_gaea00cb89bfccfa0992c273c508b922b2}{send\+S\+MS}} (const char $\ast$message)
+\begin{DoxyCompactList}\small\item\em Handle S\+MS sending. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Functions to setup module and send S\+MS. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__sendSMS_ga57c39446b495c2def59c48f08acc594c}\label{group__sendSMS_ga57c39446b495c2def59c48f08acc594c}} 
+\index{All steps to send SMS@{All steps to send SMS}!initSendSMS@{initSendSMS}}
+\index{initSendSMS@{initSendSMS}!All steps to send SMS@{All steps to send SMS}}
+\doxysubsubsection{\texorpdfstring{initSendSMS()}{initSendSMS()}}
+{\footnotesize\ttfamily bool init\+Send\+S\+MS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initial setup for sending S\+MS. 
+
+sends \char`\"{}\+A\+T+\+C\+M\+G\+S=\char`\"{}number"{} command
+
+\char`\"{}number\char`\"{} -\/ recipient mobile number in quotes
+
+module will switch to S\+MS body text mode indicated with a \textquotesingle{}$>$\textquotesingle{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true if module responds \textquotesingle{}$>$\textquotesingle{}) \\
+\hline
+\end{DoxyRetVals}
+whatever will be send after \textquotesingle{}$>$\textquotesingle{} response, is a body of the S\+MS\mbox{\Hypertarget{group__sendSMS_gaea00cb89bfccfa0992c273c508b922b2}\label{group__sendSMS_gaea00cb89bfccfa0992c273c508b922b2}} 
+\index{All steps to send SMS@{All steps to send SMS}!sendSMS@{sendSMS}}
+\index{sendSMS@{sendSMS}!All steps to send SMS@{All steps to send SMS}}
+\doxysubsubsection{\texorpdfstring{sendSMS()}{sendSMS()}}
+{\footnotesize\ttfamily bool send\+S\+MS (\begin{DoxyParamCaption}\item[{const char $\ast$}]{message }\end{DoxyParamCaption})}
+
+
+
+Handle S\+MS sending. 
+
+sends \char`\"{}\+A\+T+\+C\+M\+G\+S=\char`\"{}number"{} command
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__sendSMS_ga57c39446b495c2def59c48f08acc594c}{init\+Send\+S\+MS}}
+\end{DoxySeeAlso}
+(D\+E\+B\+UG B\+UG) response may not be accepted for the first time, because OK is after the message body, and input buffer will overflow with error check for Module return value manually in Serial monitor to see if correct text was recieved, if any errors occure
+
+delay(3000) used as buffer time to call function multiple times in row
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em message} & -\/ message body to send\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true if module is set up and responded with \char`\"{}\+O\+K\char`\"{}) \\
+\hline
+\end{DoxyRetVals}

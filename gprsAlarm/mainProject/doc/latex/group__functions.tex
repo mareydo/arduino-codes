@@ -1,0 +1,125 @@
+\hypertarget{group__functions}{}\doxysection{Main functions}
+\label{group__functions}\index{Main functions@{Main functions}}
+
+
+All needed functions which run primarly on arduino (no main interaction on module HW)  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__functions_ga6f5134369da6cf37708d806fdc3b020b}{init\+Done\+Blink}} ()
+\begin{DoxyCompactList}\small\item\em Blink builtin L\+ED 10 times. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__functions_ga88749dbdae701f1327f3b0a5880ee993}{trigger\+Alarm}} ()
+\begin{DoxyCompactList}\small\item\em Interrupt handler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__functions_ga4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Main setup of module interfaces and objects ~\newline
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__functions_gafe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Main loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{group__functions_ga34b3bcfabb21cf7dff7afa5d3a65cae0}{triggered}} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+All needed functions which run primarly on arduino (no main interaction on module HW) 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__functions_ga6f5134369da6cf37708d806fdc3b020b}\label{group__functions_ga6f5134369da6cf37708d806fdc3b020b}} 
+\index{Main functions@{Main functions}!initDoneBlink@{initDoneBlink}}
+\index{initDoneBlink@{initDoneBlink}!Main functions@{Main functions}}
+\doxysubsubsection{\texorpdfstring{initDoneBlink()}{initDoneBlink()}}
+{\footnotesize\ttfamily void init\+Done\+Blink (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Blink builtin L\+ED 10 times. 
+
+Used as mark between correct init (setup) and main program (loop)
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em void} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__functions_gafe461d27b9c48d5921c00d521181f12f}\label{group__functions_gafe461d27b9c48d5921c00d521181f12f}} 
+\index{Main functions@{Main functions}!loop@{loop}}
+\index{loop@{loop}!Main functions@{Main functions}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Main loop. 
+
+Finite state automata \begin{DoxySeeAlso}{See also}
+group \mbox{\hyperlink{group__states}{The automata states}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{group__functions_ga4fc01d736fe50cf5b977f755b675f11d}\label{group__functions_ga4fc01d736fe50cf5b977f755b675f11d}} 
+\index{Main functions@{Main functions}!setup@{setup}}
+\index{setup@{setup}!Main functions@{Main functions}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Main setup of module interfaces and objects ~\newline
+ 
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__initFunctions_ga4282795f146846b5b3c9b79a8897c34f}{handshake}}
+\end{DoxySeeAlso}
+without handshake module cant be restarter SW way, F\+A\+T\+AL E\+R\+R\+OR
+
+signals error by turning led on
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__initFunctions_ga3e9751fdc33af7667c587540ef9cfe7b}{init\+Settings}}
+\end{DoxySeeAlso}
+if problems dont resolve after SW restart, F\+A\+T\+AL E\+R\+R\+OR
+
+signals error by turning led on ~\newline
+
+
+at the end calls \mbox{\hyperlink{group__functions_ga6f5134369da6cf37708d806fdc3b020b}{init\+Done\+Blink()}}\mbox{\Hypertarget{group__functions_ga88749dbdae701f1327f3b0a5880ee993}\label{group__functions_ga88749dbdae701f1327f3b0a5880ee993}} 
+\index{Main functions@{Main functions}!triggerAlarm@{triggerAlarm}}
+\index{triggerAlarm@{triggerAlarm}!Main functions@{Main functions}}
+\doxysubsubsection{\texorpdfstring{triggerAlarm()}{triggerAlarm()}}
+{\footnotesize\ttfamily void trigger\+Alarm (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Interrupt handler. 
+
+Sets flag triggered to true
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em void} & \\
+\hline
+\end{DoxyRetVals}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{group__functions_ga34b3bcfabb21cf7dff7afa5d3a65cae0}\label{group__functions_ga34b3bcfabb21cf7dff7afa5d3a65cae0}} 
+\index{Main functions@{Main functions}!triggered@{triggered}}
+\index{triggered@{triggered}!Main functions@{Main functions}}
+\doxysubsubsection{\texorpdfstring{triggered}{triggered}}
+{\footnotesize\ttfamily bool triggered = false}
+
+Interrupt flag, true if alarm is on 

@@ -1,0 +1,143 @@
+\hypertarget{group__initFunctions}{}\doxysection{Functions to init hardware}
+\label{group__initFunctions}\index{Functions to init hardware@{Functions to init hardware}}
+
+
+Setup pins ,serial comunication and module mods.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__initFunctions_ga20c4e046a45d5ec9a92a25becabaee42}{dump\+Init\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Deleting initial data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__initFunctions_ga4c3b7689564254274a0e3a2a1771d473}{init\+Pins}} ()
+\begin{DoxyCompactList}\small\item\em Basic Pin and Object initialisation. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__initFunctions_ga4282795f146846b5b3c9b79a8897c34f}{handshake}} ()
+\begin{DoxyCompactList}\small\item\em Do handshake with module. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__initFunctions_ga3e9751fdc33af7667c587540ef9cfe7b}{init\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Initial setup of module. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Setup pins ,serial comunication and module mods. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__initFunctions_ga20c4e046a45d5ec9a92a25becabaee42}\label{group__initFunctions_ga20c4e046a45d5ec9a92a25becabaee42}} 
+\index{Functions to init hardware@{Functions to init hardware}!dumpInitData@{dumpInitData}}
+\index{dumpInitData@{dumpInitData}!Functions to init hardware@{Functions to init hardware}}
+\doxysubsubsection{\texorpdfstring{dumpInitData()}{dumpInitData()}}
+{\footnotesize\ttfamily void dump\+Init\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Deleting initial data. 
+
+reading and not storing inital comunication
+
+fetch data for 7 seconds wirh 20ms loops
+
+used as mark between correct init (setup) and main program (loop)
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em void} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__initFunctions_ga4282795f146846b5b3c9b79a8897c34f}\label{group__initFunctions_ga4282795f146846b5b3c9b79a8897c34f}} 
+\index{Functions to init hardware@{Functions to init hardware}!handshake@{handshake}}
+\index{handshake@{handshake}!Functions to init hardware@{Functions to init hardware}}
+\doxysubsubsection{\texorpdfstring{handshake()}{handshake()}}
+{\footnotesize\ttfamily bool handshake (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Do handshake with module. 
+
+tries for 5s to Send \char`\"{}\+A\+T\char`\"{} and recieve \char`\"{}\+O\+K\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true -\/ if module responds \char`\"{}\+O\+K\char`\"{}) \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__initFunctions_ga4c3b7689564254274a0e3a2a1771d473}\label{group__initFunctions_ga4c3b7689564254274a0e3a2a1771d473}} 
+\index{Functions to init hardware@{Functions to init hardware}!initPins@{initPins}}
+\index{initPins@{initPins}!Functions to init hardware@{Functions to init hardware}}
+\doxysubsubsection{\texorpdfstring{initPins()}{initPins()}}
+{\footnotesize\ttfamily void init\+Pins (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Basic Pin and Object initialisation. 
+
+setup Serial with PC, Serial with module on 9600b
+
+dumps inital RX
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__initFunctions_ga20c4e046a45d5ec9a92a25becabaee42}{dump\+Init\+Data}}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em void} & \\
+\hline
+\end{DoxyRetVals}
+hold pin in high for 2s\mbox{\Hypertarget{group__initFunctions_ga3e9751fdc33af7667c587540ef9cfe7b}\label{group__initFunctions_ga3e9751fdc33af7667c587540ef9cfe7b}} 
+\index{Functions to init hardware@{Functions to init hardware}!initSettings@{initSettings}}
+\index{initSettings@{initSettings}!Functions to init hardware@{Functions to init hardware}}
+\doxysubsubsection{\texorpdfstring{initSettings()}{initSettings()}}
+{\footnotesize\ttfamily bool init\+Settings (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initial setup of module. 
+
+uses AT commands
+
+setup mode, G\+PS, comunication handling
+
+all of them needs to be set up
+
+tries to send commands 3 times, redundant setup doesn\textquotesingle{}t matter
+
+sends R\+ST command after each fail and waits 3seconds
+
+dump initial comunication after reboot
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__initFunctions_ga20c4e046a45d5ec9a92a25becabaee42}{dump\+Init\+Data}}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true -\/ if all commands had proper response) \\
+\hline
+\end{DoxyRetVals}
+A\+T+\+C\+M\+GF=1"{} set to text mode
+
+A\+T+\+G\+PS=1 turn G\+PS on
+
+A\+T+\+C\+N\+MI=2,2,0,0,0 forward to device
+
+after each failed try restart

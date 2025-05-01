@@ -1,0 +1,39 @@
+\hypertarget{sketch_8ino}{}\doxysection{D\+:/\+Libraries/\+Documents/\+Arduino/sms\+\_\+alarm\+\_\+marecja9/sketch/sketch.ino File Reference}
+\label{sketch_8ino}\index{D:/Libraries/Documents/Arduino/sms\_alarm\_marecja9/sketch/sketch.ino@{D:/Libraries/Documents/Arduino/sms\_alarm\_marecja9/sketch/sketch.ino}}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}} \{ \newline
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647a7baf0f057c5fb39157b91344217bf5fb}{S\+E\+T\+U\+P\+\_\+\+F\+E\+T\+CH}}, 
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647a21da00c3513901c3b613bc41df1aa0ea}{S\+I\+G\+N\+A\+L\+\_\+\+F\+E\+T\+CH}}, 
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647a35265ab9558faedd2623e21a577e1231}{G\+E\+T\+\_\+\+G\+PS}}, 
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647aefd5f397703509311a5b357b1d978e9d}{A\+L\+A\+R\+M\+\_\+\+T\+R\+I\+G\+G\+E\+R\+ED}}, 
+\newline
+\mbox{\hyperlink{group__states_gga275a67132f10277ada3a0ee3d616b647a3794f36ef32b358c1c6454de6076e833}{A\+L\+A\+R\+M\+\_\+\+ON}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__functions_ga6f5134369da6cf37708d806fdc3b020b}{init\+Done\+Blink}} ()
+\begin{DoxyCompactList}\small\item\em Blink builtin L\+ED 10 times. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__functions_ga88749dbdae701f1327f3b0a5880ee993}{trigger\+Alarm}} ()
+\begin{DoxyCompactList}\small\item\em Interrupt handler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__functions_ga4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Main setup of module interfaces and objects ~\newline
+ \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__functions_gafe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Main loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}} \mbox{\hyperlink{group__states_ga83c3645ae93efa709997a0e29ff5f598}{A\+C\+T\+\_\+\+S\+T\+A\+TE}}
+\item 
+\mbox{\hyperlink{group__states_ga275a67132f10277ada3a0ee3d616b647}{S\+T\+A\+TE}} \mbox{\hyperlink{group__states_ga81858cdd96d3029886bffb1d8ea0f8fb}{N\+E\+X\+T\+\_\+\+S\+T\+A\+TE}}
+\item 
+byte \mbox{\hyperlink{group__pinout_ga55f9c01a77977c7863f2f6906a3fc9db}{R\+E\+L\+AY}} = 6
+\item 
+byte \mbox{\hyperlink{group__pinout_ga7111d95933e97e9e211baa1550b6f222}{A\+L\+A\+R\+M\+\_\+\+S\+E\+N\+S\+OR}} = 3
+\item 
+bool \mbox{\hyperlink{group__functions_ga34b3bcfabb21cf7dff7afa5d3a65cae0}{triggered}} = false
+\end{DoxyCompactItemize}

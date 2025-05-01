@@ -1,0 +1,54 @@
+\doxysubsection*{A\+B\+O\+UT}
+
+Simple alarm detecting vibrations from sensor(can be changed for any type of sensor). Uses S\+MS to comunicate with set up mobile number. After init waits for init\+S\+MS in format\+: +123456789012 -\/ 0000 (number -\/ password) and accepts comands only from given \char`\"{}number\char`\"{} and deactivates alarm only by given \char`\"{}password\char`\"{} 
+
+\doxysubsection*{L\+I\+B\+R\+A\+R\+I\+ES}
+
+using Alt\+Soft\+Serial and Tiny\+G\+PS libraries zip files included in folder ./libraries
+
+\href{https://github.com/PaulStoffregen/AltSoftSerial}{\texttt{ Alt\+Soft\+Serial}} \href{https://github.com/mikalhart/TinyGPSPlus/releases}{\texttt{ Tiny\+G\+P\+S++}} ~\newline
+
+
+\doxysubsection*{P\+IN L\+A\+Y\+O\+UT}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ Arduino }&\cellcolor{\tableheadbgcolor}\textbf{ Periferies  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ Arduino }&\cellcolor{\tableheadbgcolor}\textbf{ Periferies  }\\\cline{1-2}
+\endhead
+R\+E\+L\+AY=6 &R\+E\+L\+AY C\+OM  \\\cline{1-2}
+P\+WR=7 &M\+O\+D\+U\+LE P\+W\+R\+\_\+\+K\+EY  \\\cline{1-2}
+RX=8 &M\+O\+D\+U\+LE TX  \\\cline{1-2}
+TX=9 &M\+O\+D\+U\+LE RX  \\\cline{1-2}
+\end{longtabu}
+\doxysubsection*{UI}
+
+\doxysubsubsection*{Commands}
+
+
+\begin{DoxyItemize}
+\item \#\+G\+PS -\/ show gps coords 
+\item \#\+A\+L\+A\+RM -\/ turn alarm on 
+\item password -\/ turn alarm off 
+\end{DoxyItemize}\doxysubsection*{I/O}
+
+
+\begin{DoxyItemize}
+\item if fatal error happens during init, builtin led turns on 
+\item if init is correct, builtin led blinks 10 times 
+\item comunicates only with given number 
+\item comunicates only trough S\+MS 
+\end{DoxyItemize}~\newline
+
+
+\doxysubsection*{M\+O\+D\+U\+LE L\+I\+M\+I\+T\+A\+T\+I\+O\+NS}
+
+during init is safer to watch module built in L\+ED to check correct turn on~\newline
+ if no sms comes, send command again~\newline
+ comunication is set on 9600bauds, can be changed with A\+T+\+I\+PR=9600 (factory value is 115200 $<$-\/ not safe to use) ~\newline
+ module need 2A at peak $<$= needs to be plugged separatly, wont keeep many external chargers on by itself

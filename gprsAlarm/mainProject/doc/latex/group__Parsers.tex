@@ -1,0 +1,183 @@
+\hypertarget{group__Parsers}{}\doxysection{Function to handle string parsing}
+\label{group__Parsers}\index{Function to handle string parsing@{Function to handle string parsing}}
+
+
+Handling controlling S\+MS bodies.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{group__Parsers_ga38f8c4a55ae8c832603200b7d0b95c05}{check\+Format}} (const char $\ast$str)
+\begin{DoxyCompactList}\small\item\em Check init\+S\+MS format. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__Parsers_gae9badbde2f5955b6b0d9688ca4109dba}{parse\+Init\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Parse initialization S\+MS. \end{DoxyCompactList}\item 
+char \mbox{\hyperlink{group__Parsers_gace8579ec79516d545b7b7f17024b2905}{parse\+Control\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Parse received S\+MS as menu switch. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Parsers_gad0707d3f759288b0ab278b15a5ba5b2a}{send\+Coords\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Get position and send it in S\+MS. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{group__Parsers_gaef689ab337956e614d91619f46e76555}{received\+Password\+S\+MS}} ()
+\begin{DoxyCompactList}\small\item\em Read S\+MS to disable alarm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handling controlling S\+MS bodies. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__Parsers_ga38f8c4a55ae8c832603200b7d0b95c05}\label{group__Parsers_ga38f8c4a55ae8c832603200b7d0b95c05}} 
+\index{Function to handle string parsing@{Function to handle string parsing}!checkFormat@{checkFormat}}
+\index{checkFormat@{checkFormat}!Function to handle string parsing@{Function to handle string parsing}}
+\doxysubsubsection{\texorpdfstring{checkFormat()}{checkFormat()}}
+{\footnotesize\ttfamily bool check\+Format (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str }\end{DoxyParamCaption})}
+
+
+
+Check init\+S\+MS format. 
+
+checking input string\+:
+
+wanted format +123123123123 -\/ 1234
+
+wont check after right format =$>$ +123123123123 -\/ 123456789 is correct with password 1234
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em str} & -\/ string to check format in\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true if input string is in right format) \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__Parsers_gace8579ec79516d545b7b7f17024b2905}\label{group__Parsers_gace8579ec79516d545b7b7f17024b2905}} 
+\index{Function to handle string parsing@{Function to handle string parsing}!parseControlSMS@{parseControlSMS}}
+\index{parseControlSMS@{parseControlSMS}!Function to handle string parsing@{Function to handle string parsing}}
+\doxysubsubsection{\texorpdfstring{parseControlSMS()}{parseControlSMS()}}
+{\footnotesize\ttfamily char parse\+Control\+S\+MS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Parse received S\+MS as menu switch. 
+
+reading\+S\+MS with 7 char buffer
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__receiveSMS_ga36750cb124b7048d05ee0aa68605a84e}{receive\+S\+MS}}
+\end{DoxySeeAlso}
+check for \char`\"{}\#\+A\+L\+A\+R\+M\char`\"{} or \char`\"{}\#\+G\+P\+S\char`\"{}
+
+\textquotesingle{}\#\textquotesingle{} to make S\+MS uniqe and not recieve false commands by mistake from user
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em char} & \textquotesingle{}X\textquotesingle{}/\textquotesingle{}H\textquotesingle{}/\textquotesingle{}A\textquotesingle{} \begin{DoxyVerb}   X = nothing
+
+   H = user wants GPS coords
+
+   A = user wants forced alarm
+\end{DoxyVerb}
+ \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__Parsers_gae9badbde2f5955b6b0d9688ca4109dba}\label{group__Parsers_gae9badbde2f5955b6b0d9688ca4109dba}} 
+\index{Function to handle string parsing@{Function to handle string parsing}!parseInitSMS@{parseInitSMS}}
+\index{parseInitSMS@{parseInitSMS}!Function to handle string parsing@{Function to handle string parsing}}
+\doxysubsubsection{\texorpdfstring{parseInitSMS()}{parseInitSMS()}}
+{\footnotesize\ttfamily bool parse\+Init\+S\+MS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Parse initialization S\+MS. 
+
+receive sms
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__receiveSMS_ga36750cb124b7048d05ee0aa68605a84e}{receive\+S\+MS}}
+\end{DoxySeeAlso}
+check format of body
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__Parsers_ga38f8c4a55ae8c832603200b7d0b95c05}{check\+Format}}
+\end{DoxySeeAlso}
+store in global variables number and password
+
+wanted format \char`\"{}number -\/ password\char`\"{}
+
+will accept S\+MS from any number
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true if correct S\+MS Body is recieved from anyone) \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__Parsers_gaef689ab337956e614d91619f46e76555}\label{group__Parsers_gaef689ab337956e614d91619f46e76555}} 
+\index{Function to handle string parsing@{Function to handle string parsing}!receivedPasswordSMS@{receivedPasswordSMS}}
+\index{receivedPasswordSMS@{receivedPasswordSMS}!Function to handle string parsing@{Function to handle string parsing}}
+\doxysubsubsection{\texorpdfstring{receivedPasswordSMS()}{receivedPasswordSMS()}}
+{\footnotesize\ttfamily bool received\+Password\+S\+MS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Read S\+MS to disable alarm. 
+
+reading S\+MS bodies and checking if they contain password
+
+checking agains global variables password and number
+
+must be used after initialization of global variables (for meaningfull reason)
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__receiveSMS_ga36750cb124b7048d05ee0aa68605a84e}{receive\+S\+MS}}
+
+\mbox{\hyperlink{group__Parsers_gae9badbde2f5955b6b0d9688ca4109dba}{parse\+Init\+S\+MS}}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em bool} & (true if password was in correctly received message) \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group__Parsers_gad0707d3f759288b0ab278b15a5ba5b2a}\label{group__Parsers_gad0707d3f759288b0ab278b15a5ba5b2a}} 
+\index{Function to handle string parsing@{Function to handle string parsing}!sendCoordsSMS@{sendCoordsSMS}}
+\index{sendCoordsSMS@{sendCoordsSMS}!Function to handle string parsing@{Function to handle string parsing}}
+\doxysubsubsection{\texorpdfstring{sendCoordsSMS()}{sendCoordsSMS()}}
+{\footnotesize\ttfamily void send\+Coords\+S\+MS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get position and send it in S\+MS. 
+
+reading\+G\+PS \begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{group__GPSHandler_gaa3eb0cb2cae94aa40f0d3e66011f6832}{get\+Position}}
+\end{DoxySeeAlso}
+sends either new position or last known (stored in last\+Pos)
+
+tries to send S\+MS 3 times
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em void} & \\
+\hline
+\end{DoxyRetVals}
