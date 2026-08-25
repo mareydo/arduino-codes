@@ -24,7 +24,9 @@
 #define CAM_PIN_HREF    23
 #define CAM_PIN_PCLK    22
 
-#define VIDEO_DURATION_MS 5000
+//#define VIDEO_DURATION_MS 5000
+#define VIDEO_FRAME_COUNT 5
+#define VIDEO_FPS_RATE 1 //10fps
 #define FPS_2_MS(ms) 1000.0/ms
 
 #define DEBUG_LED
@@ -34,21 +36,29 @@
 
 bool SD_connect()
 {
-  if (!SD_MMC.begin("/sdcard", true)) { // true enables 1-bit mode to free up GPIOs
+  if (!SD_MMC.begin("/sdcard", true)) 
+  { // true enables 1-bit mode to free up GPIOs
     Serial.println("SD Card Mount Failed");
     return false;
   }
  
   uint8_t cardType = SD_MMC.cardType();
-  if(cardType == CARD_NONE){
+  if(cardType == CARD_NONE)
+  {
     Serial.println("No SD Card attached");
     return false;
   }
   return true;
 }
 
+void SD_disconnect()
+{
+  SD_MMC.end();
+}
+
 esp_err_t camera_init()
 {
+  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
   camera_config_t camera_config = {
     .pin_pwdn  = CAM_PIN_PWDN,
     .pin_reset = CAM_PIN_RESET,
@@ -73,11 +83,11 @@ esp_err_t camera_init()
     .ledc_channel = LEDC_CHANNEL_0,
 
     .pixel_format = PIXFORMAT_JPEG,//YUV422,GRAYSCALE,RGB565,JPEG
-    .frame_size = FRAMESIZE_UXGA,//QQVGA-UXGA, For ESP32, do not use sizes above QVGA when not JPEG. The performance of the ESP32-S series has improved a lot, but JPEG mode always gives better frame rates.
+    .frame_size = FRAMESIZE_SVGA,//QQVGA-UXGA
 
     .jpeg_quality = 12, //0-63, for OV series camera sensors, lower number means higher quality
     .fb_count = 1, //When jpeg mode is used, if fb_count more than one, the driver will work in continuous mode.
-    .grab_mode = CAMERA_GRAB_WHEN_EMPTY//CAMERA_GRAB_LATEST. Sets when buffers should be filled
+    .grab_mode = CAMERA_GRAB_LATEST//CAMERA_GRAB_LATEST. Sets when buffers should be filled
   };
 
 
@@ -88,29 +98,34 @@ esp_err_t camera_init()
 
   //initialize the camera
   esp_err_t err = esp_camera_init(&camera_config);
-  if (err != ESP_OK) {
-      return err;
+  if (err != ESP_OK) 
+  {
+    Serial.print("Init ended with error ");
+    Serial.println(err);
+    return err;
   }
+
   #ifdef DEBUG_LED
     pinMode(DEBUG_LED_PIN,OUTPUT);
   #endif
 
+  delay(1000);
   return ESP_OK;
 }
 
 void camera_turnLEDOn() {
   #ifdef DEBUG_LED
-  digitalWrite(DEBUG_LED_PIN,HIGH);
+  digitalWrite(DEBUG_LED_PIN,LOW);
   #endif
 }
 
 void camera_turnLEDOff() {
   #ifdef DEBUG_LED
-  digitalWrite(DEBUG_LED_PIN,LOW);
+  digitalWrite(DEBUG_LED_PIN,HIGH);
   #endif
 }
 
-RTC_DATA_ATTR uint8_t videoNumber = 0;
+RTC_DATA_ATTR uint8_t videoNumber = 1;
 void camera_loadVideoNumber()
 {
   EEPROM.begin(1);
@@ -123,39 +138,75 @@ void camera_saveVideoNumber()
   EEPROM.commit();
 }
 
-void camera_recordVideo() 
+esp_err_t camera_takePicture(const char* path)
 {
   camera_fb_t * fb = NULL;
   esp_err_t res = ESP_OK;
-    
-  String path = "/video" + String(videoNumber) + ".avi";
-  
   fs::FS &fs = SD_MMC;
-  
-  File file = fs.open(path.c_str(), FILE_WRITE);
-  if(!file){ 
-    Serial.print("No file");
-    Serial.println(path.c_str());
-    return; 
+  File file = fs.open(path, FILE_WRITE);
+  if(!file)
+  { 
+    Serial.print("No file ");
+    Serial.println(path);
+    return ESP_ERR_INVALID_ARG; 
+  }
+  fb = esp_camera_fb_get();
+  if(!fb) 
+  {
+    Serial.println("Camera capture failed");
+    return ESP_FAIL;
+  }
+  file.write(fb->buf, fb->len);
+  file.close();
+  esp_camera_fb_return(fb);
+  Serial.println("Picture taken");
+  return ESP_OK;
+}
+
+
+
+void camera_timelapse() 
+{
+  fs::FS &fs = SD_MMC;
+  if(!fs.mkdir("/" + String(videoNumber)))
+  {
+    Serial.println("Cannot create directory");
+    return;
   }
   
+  unsigned long lastTime = -1;
+  unsigned long fps = FPS_2_MS(VIDEO_FPS_RATE);
+
+  unsigned long frameCounter = 0;
+  while(1)
+  {
+    unsigned long now = millis();
+    if(lastTime == -1) { lastTime = now; }
+    unsigned long elapsed = now - lastTime;
+    if(elapsed > fps )
+    {
+      String fullPath = "/" + String(videoNumber) + "/" + String(frameCounter) + ".jpeg";
+      if(camera_takePicture(fullPath.c_str()) != ESP_OK) { break; }
+      ++frameCounter;
+      lastTime = now;
+    }
+    if(frameCounter == VIDEO_FRAME_COUNT)
+    {
+      break;
+    }
+  }
+
+  /*
+
   unsigned long startTime = millis();
-  
   while (millis() - startTime < VIDEO_DURATION_MS) 
   {
-    fb = esp_camera_fb_get();
-    if (!fb) { 
-      Serial.println("Cannot obtain buffer");
-      break; 
-    }
-
-    file.write(fb->buf, fb->len);
-    esp_camera_fb_return(fb);
-
-    delay(33);
+    String fullPath = "/" + String(videoNumber) + "/" + String(frameCounter) + ".jpeg";
+    if(camera_takePicture(fullPath.c_str()) != ESP_OK) { break; }
+    ++frameCounter;
+    delay(1000);
   }
-    
-  file.close();
+  */
   return;
 }
 
@@ -168,14 +219,16 @@ void setup()
   esp_err_t retVal = camera_init();
   bool ret = SD_connect();
 
-  Serial.print("Inited with code");
-  Serial.println(retVal, ret);
+  Serial.print("Inited with code ");
+  Serial.println(String(retVal) + " " + String(ret));
+
   camera_turnLEDOn();
   Serial.println("START");
-  camera_recordVideo();
+  camera_timelapse();
   Serial.println("STOP");
   camera_turnLEDOff();
   //camera_saveVideoNumber();
+  SD_disconnect();
 
 }
 
