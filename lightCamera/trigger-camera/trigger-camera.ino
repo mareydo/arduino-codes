@@ -175,7 +175,7 @@ void camera_timelapse()
   }
   
   unsigned long lastTime = -1;
-  unsigned long fps = FPS_2_MS(VIDEO_FPS_RATE);
+  unsigned long frameDuration = FPS_2_MS(VIDEO_FPS_RATE);
 
   unsigned long frameCounter = 0;
   while(1)
@@ -183,7 +183,7 @@ void camera_timelapse()
     unsigned long now = millis();
     if(lastTime == -1) { lastTime = now; }
     unsigned long elapsed = now - lastTime;
-    if(elapsed > fps )
+    if(elapsed > frameDuration )
     {
       String fullPath = "/" + String(videoNumber) + "/" + String(frameCounter) + ".jpeg";
       if(camera_takePicture(fullPath.c_str()) != ESP_OK) { break; }
@@ -195,18 +195,6 @@ void camera_timelapse()
       break;
     }
   }
-
-  /*
-
-  unsigned long startTime = millis();
-  while (millis() - startTime < VIDEO_DURATION_MS) 
-  {
-    String fullPath = "/" + String(videoNumber) + "/" + String(frameCounter) + ".jpeg";
-    if(camera_takePicture(fullPath.c_str()) != ESP_OK) { break; }
-    ++frameCounter;
-    delay(1000);
-  }
-  */
   return;
 }
 
