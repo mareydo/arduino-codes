@@ -28,11 +28,15 @@
 #define VIDEO_FRAME_COUNT 5
 #define VIDEO_FPS_RATE 1 //10fps
 #define FPS_2_MS(ms) 1000.0/ms
+#define REQUIRED_BYTES VIDEO_FRAME_COUNT*25*1024 //TODO find better max jpeg size
+
 
 #define DEBUG_LED
 #ifdef DEBUG_LED
   #define DEBUG_LED_PIN 33
 #endif
+
+
 
 bool SD_connect()
 {
@@ -167,13 +171,8 @@ esp_err_t camera_takePicture(const char* path)
 
 void camera_timelapse() 
 {
-  fs::FS &fs = SD_MMC;
-  if(!fs.mkdir("/" + String(videoNumber)))
-  {
-    Serial.println("Cannot create directory");
-    return;
-  }
-  
+
+  if(!SD_createDir()) { return; }
   unsigned long lastTime = -1;
   unsigned long frameDuration = FPS_2_MS(VIDEO_FPS_RATE);
 
@@ -195,7 +194,48 @@ void camera_timelapse()
       break;
     }
   }
+  ++videoNumber;
   return;
+}
+
+void SD_removeOldestDir()
+{
+  uint16_t dirName = 0;
+  fs::FS &fs = SD_MMC;
+  while(dirName <= videoNumber)
+  {
+    Serial.println("Checking" + String(dirName));
+    Serial.println(fs.exists("/" + String(dirName)));
+    if(fs.exists("/"+String(dirName)))
+    {
+      Serial.print("Removing ");
+      Serial.println(dirName);
+      fs.rmdir(String(dirName).c_str());
+      return;
+    }
+    ++ dirName;
+  }
+  Serial.println("Cannot find Oldest folder");
+  return;
+}
+
+bool SD_createDir()
+{
+  fs::FS &fs = SD_MMC;
+  if(!fs.mkdir("/" + String(videoNumber)))
+  {
+    Serial.println("Cannot create directory");
+    return false;
+  }
+  return true;
+}
+
+
+bool SD_isFull()
+{
+  Serial.print("Used: ");
+  Serial.println(SD_MMC.totalBytes() - SD_MMC.usedBytes());
+  return SD_MMC.totalBytes() - SD_MMC.usedBytes() < REQUIRED_BYTES;
 }
 
 void setup() 
@@ -212,10 +252,13 @@ void setup()
 
   camera_turnLEDOn();
   Serial.println("START");
+  Serial.print("Is card full? ");
+  Serial.println(SD_isFull());
   camera_timelapse();
   Serial.println("STOP");
   camera_turnLEDOff();
   //camera_saveVideoNumber();
+  SD_removeOldestDir();
   SD_disconnect();
 
 }
