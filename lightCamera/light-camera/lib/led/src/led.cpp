@@ -1,5 +1,4 @@
 #include "led/led.hpp"
-#include "esp32-hal-gpio.h"
 #include <Arduino.h>
 
 LED::LED(const uint8_t pin)
