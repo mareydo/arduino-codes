@@ -10,6 +10,7 @@ class SD
 {
     private:
         uint16_t actualDirName;
+        bool isConnected;
 
         bool createFolder();
         bool removeOldest();
@@ -17,9 +18,13 @@ class SD
         bool connect();
         void disconnect();
     public:
+        explicit SD();
+        SD(const SD& ) = delete;
+        SD& operator=(const SD&) = delete;
+
         bool isFull();
 
         bool loadDirName();
         bool storeDirName();
-        bool writeToFile(const camera_fb_t*);
+        bool writeToFile(const camera_fb_t*, const uint16_t);
 };

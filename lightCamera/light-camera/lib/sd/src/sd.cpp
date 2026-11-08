@@ -3,11 +3,15 @@
 #include <FS.h>
 #include <SD_MMC.h>
 
+#include "debug/debugPrint.h"
 #include "sd/sd.hpp"
+
+SD::SD():actualDirName(-1), isConnected(false) {}
+
 bool SD::loadDirName()
 {
     EEPROM.begin(1);
-    actualDirName = EEPROM.read(0) + 1;
+    actualDirName = EEPROM.read(0);
     return true; //TODO
 }
 bool SD::storeDirName()
@@ -19,85 +23,130 @@ bool SD::storeDirName()
 
 bool SD::connect()
 {
+    if(isConnected)
+    {
+        return true;
+    }
+    isConnected = false;
+
     if (!SD_MMC.begin("/sdcard", true))
     { // true enables 1-bit mode to free up GPIOs
-        Serial.println("SD Card Mount Failed");
+        DEBUG_PRINTLN("SD Card Mount Failed")
         return false;
     }
+    DEBUG_PRINTLN("SD Connected")
 
     uint8_t cardType = SD_MMC.cardType();
     if(cardType == CARD_NONE)
     {
-        Serial.println("No SD Card attached");
+        DEBUG_PRINTLN("No SD Card attached")
         return false;
     }
+
+    DEBUG_PRINTLN("SD Loaded")
+    isConnected = true;
     return true;
 }
 void SD::disconnect()
 {
-    #ifdef DEBUG
-        Serial.println("SD Disconnect");
-    #endif
+    if(!isConnected)
+    {
+        return;
+    }
+    DEBUG_PRINTLN("SD Disconnected")
     SD_MMC.end();
+    isConnected = false;
 }
 
 bool SD::createFolder()
 {
-    if(!connect()) { return false; }
+    ++actualDirName;
     fs::FS &fs = SD_MMC;
     if(!fs.mkdir("/" + String(actualDirName)))
     {
-        #ifdef DEBUG
-            Serial.println("Cannot create directory");
-        #endif
-        disconnect();
+        DEBUG_PRINTLN("Cannot create directory")
         return false;
     }
-    disconnect();
+
+    DEBUG_PRINTLN("Created directory: /" + String(actualDirName));
     return true;
 }
 bool SD::removeOldest()
 {
-    if(!connect()) { return false; }
     uint16_t dirNumber = 0;
     fs::FS &fs = SD_MMC;
     while(dirNumber <= actualDirName)
     {
-        #ifdef DEBUG
-            Serial.println("Checking" + String(dirNumber));
-            Serial.println(fs.exists("/" + String(dirNumber)));
-        #endif
+
+        DEBUG_PRINTLN("Checking" + String(dirNumber))
+        DEBUG_PRINTLN(fs.exists("/" + String(dirNumber)))
+
         if(fs.exists("/"+String(dirNumber)))
         {
-            #ifdef DEBUG
-                Serial.print("Removing ");
-                Serial.println(dirNumber);
-            #endif
+
+            DEBUG_PRINTLN("Removing " + String(dirNumber))
+
             fs.rmdir(String(dirNumber).c_str());
             return true;
         }
         ++ dirNumber;
     }
-    #ifdef DEBUG
-        Serial.println("Cannot find Oldest folder");
-    #endif
+
+    DEBUG_PRINTLN("Cannot find Oldest folder")
     return false;
 }
+//TODO: can be deleted
 bool SD::isFull()
 {
     if(!connect()) { return false; }
-    #ifdef DEBUG
-        Serial.print("Used: ");
-        Serial.println(SD_MMC.totalBytes() - SD_MMC.usedBytes());
-    #endif
-    return SD_MMC.totalBytes() - SD_MMC.usedBytes() < REQUIRED_BYTES;
+
+    DEBUG_PRINT("Free space: ")
+    DEBUG_PRINTLN(SD_MMC.totalBytes() - SD_MMC.usedBytes())
+
+    bool retVal = SD_MMC.totalBytes() - SD_MMC.usedBytes() < REQUIRED_BYTES;
+    disconnect();
+    return retVal;
 }
-bool SD::writeToFile(const camera_fb_t* buffer)
+bool SD::writeToFile(const camera_fb_t* buffer, const uint16_t frameNumber)
 {
+    if(buffer == nullptr)
+    {
+
+        DEBUG_PRINTLN("Write to file camera buffer is null")
+        return false;
+    }
     if(!connect()) { return false; }
     fs::FS &fs = SD_MMC;
-    File file = fs.open("/" + String(actualDirName), FILE_WRITE);
-    ++actualDirName;
+    if(frameNumber == 0)
+    {
+        if(!createFolder())
+        {
+            disconnect();
+            return false;
+        }
+    }
+    String fullPath = "/" + String(actualDirName) + "/" + String(frameNumber) + ".jpeg";
+    File file = fs.open(fullPath.c_str(), FILE_WRITE);
+    if(!file)
+    {
+        DEBUG_PRINTLN("Cannot open file " + fullPath)
+        disconnect();
+        return false;
+    }
+    if(SD_MMC.totalBytes() - SD_MMC.usedBytes() < buffer->len)
+    {
+        if(!removeOldest())
+        {
+            file.close();
+            disconnect();
+            return false;
+        }
+    }
+
+    DEBUG_PRINTLN("Storing file " + fullPath)
+    file.write(buffer->buf, buffer->len);
+    file.flush();
+    file.close();
     disconnect();
     return true; // TODO
 }
