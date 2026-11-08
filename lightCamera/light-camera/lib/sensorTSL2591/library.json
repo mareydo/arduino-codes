@@ -1,0 +1,8 @@
+{
+    "name": "sensorTSL2591",
+    "version": "1.0.0",
+    "dependencies": {
+        "Adafruit_TSL2591": "*",
+        "debug": "*"
+    }
+}
