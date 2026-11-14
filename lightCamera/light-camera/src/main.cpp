@@ -8,13 +8,13 @@
 #include <sensorTSL2591/sensorTSL2591.hpp>
 /////////////////////////////////////////////////////////////////
 RTC_DATA_ATTR bool inited = false;
-bool err = false;
+bool noErr = true;
 
 /////////////////////////////////////////////////////////////////
 LED led(DEBUG_LED_PIN);
 SD sd;
 Camera camera;
-SensorTSL2591 sensor;
+SensorTSL2591 sensor(PIN_SDA, PIN_SCL);
 /////////////////////////////////////////////////////////////////
 void esp_initINT()
 {
@@ -29,7 +29,7 @@ void esp_sleep()
 {
   // save usr objects
   sensor.clearInterrupt();
-  err = false; // FIXME: not sure about this
+  noErr = true; // FIXME: not sure about this
   sd.storeDirName();
   // sleep mcu
   DEBUG_PRINTLN("Going to sleep");
@@ -42,13 +42,14 @@ void esp_sleep()
 //init sensor
 bool sensor_init()
 {
-  if(sensor.begin(PIN_SDA, PIN_SCL)) { return true; }
+  return true;/*
+  if(sensor.begin()) { return true; }
 
   DEBUG_PRINTLN("Sensor not Initialized");
   DEBUG_LED(led, HIGH);
   esp_sleep();
 
-  return false;
+  return false;*/
 }
 //init camera
 bool camera_init()
@@ -77,40 +78,47 @@ void setup()
 {
   // esp inter init
   delay(2000);
-  err = false;
+  noErr = true;
   #if DEBUG == 1
     Serial.begin(115200);
-    DEBUG_PRINTLN("START");
   #endif /* DEBUG */
 
   if(inited)
   {
+    DEBUG_PRINTLN("INITED");
     //disable interrupt
     esp_awake();
   }
-
+  DEBUG_PRINT("START: ");
+  DEBUG_PRINTLN(noErr);
+  DEBUG_PRINT("SENSOR: ");
   //init sensor
-  //err |= sensor_init();
+  noErr |= sensor_init();
+  DEBUG_PRINTLN(noErr);
   //init camera
-  err |= camera_init();
+  DEBUG_PRINT("CAMERA: ");
+  noErr |= camera_init();
+  DEBUG_PRINTLN(noErr);
   //init sd
-  err |= sd_init();
+  DEBUG_PRINT("SD: ");
+  noErr |= sd_init();
+  DEBUG_PRINTLN(noErr);
 
   //register sensor interrupt
-  sensor.registerInterrupt();
+  noErr |= sensor.registerInterrupt();
 
   if(!inited)
   {
     esp_initINT();
     inited=true;
   }
+  DEBUG_PRINTLN("Setup finished");
 }
 
 void loop() 
 {
   camera.recordTimelapse(sd);
-  //if((err) || (!sensor.isOutsideBounds()))
-  if(err)
+  if((!noErr) || (!sensor.isOutsideBounds()))
   {
     esp_sleep();
   }
