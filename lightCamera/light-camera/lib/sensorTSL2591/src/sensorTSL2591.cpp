@@ -2,11 +2,12 @@
 
 #include <debug/debugPrint.h>
 
-SensorTSL2591::SensorTSL2591()
-            : sensor(2591)
-            {}
+SensorTSL2591::SensorTSL2591(const uint8_t SDA,const uint8_t SCL)
+                : pinSDA(SDA)
+                , pinSCL(SCL)
+                , sensor(2591) {}
 
-    bool SensorTSL2591::begin(const uint8_t pinSDA,const uint8_t pinSCL)
+bool SensorTSL2591::connect()
 {
     if(!Wire.begin(pinSDA,pinSCL))
     {
@@ -30,6 +31,11 @@ SensorTSL2591::SensorTSL2591()
     return true;
 }
 
+void SensorTSL2591::disconnect()
+{
+    Wire.end();
+}
+
 // void sensor_printLux()
 // {
 //   uint32_t raw = sensor.getLuminosity(TSL2591_FULLSPECTRUM);
@@ -39,26 +45,35 @@ SensorTSL2591::SensorTSL2591()
 //   Serial.println(String(lb) + " " + String(ub));
 // }
 
-void SensorTSL2591::registerInterrupt()
+bool SensorTSL2591::registerInterrupt()
 {
+    if(!connect()) { return false; }
     sensor.registerInterrupt(SENSOR_LOLIM,
                                 SENSOR_HILIM,
                                 TSL2591_PERSIST_5);
     delay(300);
     sensor.enable();
+    disconnect();
+    return true;
 }
 
-void SensorTSL2591::clearInterrupt()
+bool SensorTSL2591::clearInterrupt()
 {
+    if(!connect()) { return false; }
     sensor.clearInterrupt();
+    disconnect();
+    return true;
 }
 
 bool SensorTSL2591::isOutsideBounds()
 {
-
+    // TODO
+    if(!connect()) { return false; }
     uint32_t raw = sensor.getLuminosity(TSL2591_FULLSPECTRUM);
     uint16_t lb = raw & 0xFFFF;
     DEBUG_PRINTLN(lb);
     if((lb == 0xFFFF)||(lb == 0x0)) { return false; }
+    disconnect();
     return lb <= SENSOR_LOLIM || lb >= SENSOR_HILIM;
+    
 }
