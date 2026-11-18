@@ -7,6 +7,8 @@
 class SensorTSL2591
 {
     private:
+        bool isConnected;
+
         uint8_t pinSDA;
         uint8_t pinSCL;
 
@@ -22,4 +24,8 @@ class SensorTSL2591
         bool registerInterrupt();
         bool clearInterrupt();
         bool isOutsideBounds();
+
+        void disable();
+
+        void printLux();
 };
