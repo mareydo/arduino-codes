@@ -107,9 +107,9 @@ _i2c=theWire;
   setGain(_gain);
 
   // Note: by default, the device is in power down mode on bootup
-  disable();
+  //disable();
   // you can enable it with
-  // enable();
+  enable();
 
   return true;
 }
