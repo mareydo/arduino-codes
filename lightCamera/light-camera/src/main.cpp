@@ -1,3 +1,5 @@
+#include "WString.h"
+#include "esp32-hal.h"
 #include <Arduino.h>
 
 #include <config/default.cfg.h>
@@ -8,7 +10,17 @@
 #include <sensorTSL2591/sensorTSL2591.hpp>
 /////////////////////////////////////////////////////////////////
 RTC_DATA_ATTR bool inited = false;
-bool noErr = true;
+
+uint8_t errorCode = 0;
+#define ERROR_NONE  0b00
+#define ERROR_SLEEP 0b01
+#define ERROR_TIMER 0b10
+
+#define CLEAR_ERROR errorCode = 0
+
+#define SET_SLEEP_ERROR errorCode |= ERROR_SLEEP
+#define SET_TIMER_ERROR errorCode |= ERROR_TIMER
+
 
 /////////////////////////////////////////////////////////////////
 LED led(DEBUG_LED_PIN);
@@ -22,54 +34,55 @@ void esp_initINT()
 }
 void esp_awake()
 {
-  DEBUG_PRINTLN("Awake");
+  DEBUG_PRINTLN("Awake. Disabling interrupt");
   esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
 }
 void esp_sleep()
 {
   // save usr objects
   sensor.clearInterrupt();
-  noErr = true; // FIXME: not sure about this
   sd.storeDirName();
   // sleep mcu
-  DEBUG_PRINTLN("Going to sleep");
+  DEBUG_PRINTLN("Going to sleep. Enabling interrupt");
   gpio_pullup_en(PIN_INT);
   esp_sleep_enable_ext0_wakeup(PIN_INT, LOW);
   esp_deep_sleep_start();
 }
+void esp_timer_sleep()
+{
+  //TODO
+  DEBUG_PRINTLN("Going to timer sleep");
+}
 /////////////////////////////////////////////////////////////////
 
 //init sensor
-bool sensor_init()
-{
-  return true;/*
-  if(sensor.begin()) { return true; }
 
-  DEBUG_PRINTLN("Sensor not Initialized");
-  DEBUG_LED(led, HIGH);
-  esp_sleep();
-
-  return false;*/
-}
 //init camera
 bool camera_init()
 {
-  if(camera.begin()) { return true; }
+  if(camera.begin())
+  {
+    DEBUG_PRINTLN("Camera Inited");
+    return true;
+  }
 
   DEBUG_PRINTLN("Camera not Initialized");
   DEBUG_LED(led, HIGH);
-  esp_sleep();
 
   return false;
 }
+
 //init sd
 bool sd_init()
 {
-  if(sd.loadDirName()) { return true; }
+  if(sd.loadDirName())
+  {
+    DEBUG_PRINTLN("SD Inited");
+    return true;
+  }
 
   DEBUG_PRINTLN("SD Dir Name not Initialized");
   DEBUG_LED(led, HIGH);
-  esp_sleep();
 
   return false;
 }
@@ -78,48 +91,78 @@ void setup()
 {
   // esp inter init
   delay(2000);
-  noErr = true;
+  bool retVal = false;
+
   #if DEBUG == 1
     Serial.begin(115200);
   #endif /* DEBUG */
 
+  DEBUG_PRINTLN("Start " + String(digitalRead(PIN_INT)));
   if(inited)
   {
-    DEBUG_PRINTLN("INITED");
     //disable interrupt
+    DEBUG_PRINTLN("INITED WAKEUP");
     esp_awake();
   }
-  DEBUG_PRINT("START: ");
-  DEBUG_PRINTLN(noErr);
-  DEBUG_PRINT("SENSOR: ");
-  //init sensor
-  noErr |= sensor_init();
-  DEBUG_PRINTLN(noErr);
-  //init camera
-  DEBUG_PRINT("CAMERA: ");
-  noErr |= camera_init();
-  DEBUG_PRINTLN(noErr);
-  //init sd
-  DEBUG_PRINT("SD: ");
-  noErr |= sd_init();
-  DEBUG_PRINTLN(noErr);
-
-  //register sensor interrupt
-  noErr |= sensor.registerInterrupt();
-
-  if(!inited)
+  else
   {
-    esp_initINT();
-    inited=true;
+    // DEBUG_PRINTLN("NOT INITED WAKEUP");
+    // CLEAR_ERROR;
+    // // setup one time info
+    // // sensor interrupt
+    // retVal = sensor.registerInterrupt();
+    // DEBUG_PRINTLN("SENSOR UNPLUG WAIT");
+    // delay(5000);
+    // DEBUG_PRINTLN("WAIT ENDS");
+    // if(!retVal) { SET_TIMER_ERROR; }
   }
+  // camera
+  retVal = camera_init();
+  if(!retVal) { SET_SLEEP_ERROR; }
+
+  DEBUG_PRINTLN("Before Begin" + String(digitalRead(PIN_INT)));
+  //load run info
+  retVal = sd_init();
+  if(!retVal) { SET_SLEEP_ERROR; }
+  //DEBUG_PRINTLN("After Begin" + String(digitalRead(PIN_INT)));
+  //esp_initINT();
+  //DEBUG_PRINTLN("After INT" + String(digitalRead(PIN_INT)));
+  //sensor.clearInterrupt();
   DEBUG_PRINTLN("Setup finished");
 }
-
-void loop() 
+bool loopMe = true;
+void loop()
 {
-  camera.recordTimelapse(sd);
-  if((!noErr) || (!sensor.isOutsideBounds()))
+  /*if(errorCode & ERROR_TIMER)
   {
+    DEBUG_PRINTLN("ERROR TIMER");
+    esp_timer_sleep();
+  }
+  if(errorCode & ERROR_SLEEP)
+  {
+    DEBUG_PRINTLN("ERROR SLEEP");
     esp_sleep();
   }
+  */
+  //if(sensor.isOutsideBounds())
+  if(loopMe)
+  {
+    DEBUG_PRINTLN("[foo]: Start " + String(digitalRead(PIN_INT)));
+    sensor.isOutsideBounds();
+    
+    loopMe = false;
+    // DEBUG_PRINTLN("IS OUTSIDE BOUNDS");
+    // DEBUG_LED(led, HIGH); 
+    DEBUG_PRINTLN("[foo]: before clear" + String(digitalRead(PIN_INT)));
+    sensor.disable();
+    DEBUG_PRINTLN("[foo]: after clear" + String(digitalRead(PIN_INT)));
+    camera.recordTimelapse(sd);
+   DEBUG_PRINTLN("[foo]: after record" + String(digitalRead(PIN_INT)));
+  }
+  // else
+  // {
+  //   //DEBUG_PRINTLN("IS INSIDE BOUNDS");
+  //   //DEBUG_LED(led, LOW);
+  //   //esp_sleep();
+  // }
 }
