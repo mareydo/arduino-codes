@@ -79,8 +79,8 @@ bool Camera::begin(const camera_config_t &config)
     esp_err_t err = esp_camera_init(&config);
     if (err != ESP_OK)
     {
-        DEBUG_PRINT("Init ended with error ")
-        DEBUG_PRINTLN(err)
+        DEBUG_PRINT("Init ended with error ");
+        DEBUG_PRINTLN(err);
 
         return false;
     }
@@ -98,7 +98,7 @@ camera_fb_t* Camera::obtainBuffer()
     fb = esp_camera_fb_get();
     if(!fb)
     {
-        DEBUG_PRINTLN("Camera capture failed")
+        DEBUG_PRINTLN("Camera capture failed");
         return nullptr;
     }
     return fb;
@@ -125,7 +125,7 @@ void Camera::recordTimelapse(SD& sd)
             camera_fb_t* fb = obtainBuffer();
             if(!fb)
             {
-                DEBUG_PRINTLN("Failed to obtain buffer")
+                DEBUG_PRINTLN("Failed to obtain buffer");
                 return;
             }
             if(!sd.writeToFile(fb, frameCounter))
@@ -134,7 +134,7 @@ void Camera::recordTimelapse(SD& sd)
                 break;
             }
             releaseBuffer(fb);
-            DEBUG_PRINTLN("Made photo " + String(frameCounter))
+            DEBUG_PRINTLN("Made photo " + String(frameCounter));
             ++frameCounter;
             lastTime = now;
         }
