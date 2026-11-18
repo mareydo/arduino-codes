@@ -9,7 +9,7 @@
 #endif /* DEBUG */
 
 #ifndef SENSOR_HILIM
-    #define SENSOR_HILIM  900
+    #define SENSOR_HILIM  20
 #endif /* SENSOR_HILIM */
 
 #ifndef SENSOR_LOLIM
