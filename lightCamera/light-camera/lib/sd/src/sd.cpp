@@ -28,34 +28,36 @@ bool SD::connect()
         return true;
     }
     isConnected = false;
+    //SD_MMC.setPins();
 
     if (!SD_MMC.begin("/sdcard", true))
     { // true enables 1-bit mode to free up GPIOs
-        DEBUG_PRINTLN("SD Card Mount Failed")
+        DEBUG_PRINTLN("[SD]: Card Mount Failed");
         return false;
     }
-    DEBUG_PRINTLN("SD Connected")
+    DEBUG_PRINTLN("[SD]: SD begin");
 
     uint8_t cardType = SD_MMC.cardType();
     if(cardType == CARD_NONE)
     {
-        DEBUG_PRINTLN("No SD Card attached")
+        DEBUG_PRINTLN("[SD]: No Card attached");
+        disconnect();
         return false;
     }
 
-    DEBUG_PRINTLN("SD Loaded")
+    DEBUG_PRINTLN("[SD]: Connected");
     isConnected = true;
     return true;
 }
 void SD::disconnect()
 {
-    if(!isConnected)
-    {
-        return;
-    }
-    DEBUG_PRINTLN("SD Disconnected")
+    if(!isConnected) { return; }
     SD_MMC.end();
+    // TODO
+    gpio_reset_pin(gpio_num_t(PIN_SDA));
+    gpio_reset_pin(gpio_num_t(PIN_SCL));
     isConnected = false;
+    DEBUG_PRINTLN("SD Disconnected");
 }
 
 bool SD::createFolder()
@@ -64,11 +66,11 @@ bool SD::createFolder()
     fs::FS &fs = SD_MMC;
     if(!fs.mkdir("/" + String(actualDirName)))
     {
-        DEBUG_PRINTLN("Cannot create directory")
+        DEBUG_PRINTLN("[SD]: Cannot create directory");
         return false;
     }
 
-    DEBUG_PRINTLN("Created directory: /" + String(actualDirName));
+    DEBUG_PRINTLN("[SD]: Created directory: /" + String(actualDirName));
     return true;
 }
 bool SD::removeOldest()
@@ -78,13 +80,13 @@ bool SD::removeOldest()
     while(dirNumber <= actualDirName)
     {
 
-        DEBUG_PRINTLN("Checking" + String(dirNumber))
-        DEBUG_PRINTLN(fs.exists("/" + String(dirNumber)))
+        DEBUG_PRINTLN("[SD]: Checking" + String(dirNumber));
+        DEBUG_PRINTLN("[SD]: Exists: " + String(fs.exists("/" + String(dirNumber))));
 
         if(fs.exists("/"+String(dirNumber)))
         {
 
-            DEBUG_PRINTLN("Removing " + String(dirNumber))
+            DEBUG_PRINTLN("[SD]: Removing " + String(dirNumber));
 
             fs.rmdir(String(dirNumber).c_str());
             return true;
@@ -92,7 +94,7 @@ bool SD::removeOldest()
         ++ dirNumber;
     }
 
-    DEBUG_PRINTLN("Cannot find Oldest folder")
+    DEBUG_PRINTLN("[SD]: Cannot find Oldest folder");
     return false;
 }
 //TODO: can be deleted
@@ -100,8 +102,8 @@ bool SD::isFull()
 {
     if(!connect()) { return false; }
 
-    DEBUG_PRINT("Free space: ")
-    DEBUG_PRINTLN(SD_MMC.totalBytes() - SD_MMC.usedBytes())
+    DEBUG_PRINT("[SD]: Free space: ");
+    DEBUG_PRINTLN(SD_MMC.totalBytes() - SD_MMC.usedBytes());
 
     bool retVal = SD_MMC.totalBytes() - SD_MMC.usedBytes() < REQUIRED_BYTES;
     disconnect();
@@ -111,8 +113,7 @@ bool SD::writeToFile(const camera_fb_t* buffer, const uint16_t frameNumber)
 {
     if(buffer == nullptr)
     {
-
-        DEBUG_PRINTLN("Write to file camera buffer is null")
+        DEBUG_PRINTLN("[SD]: Write to file camera buffer is null");
         return false;
     }
     if(!connect()) { return false; }
@@ -129,7 +130,7 @@ bool SD::writeToFile(const camera_fb_t* buffer, const uint16_t frameNumber)
     File file = fs.open(fullPath.c_str(), FILE_WRITE);
     if(!file)
     {
-        DEBUG_PRINTLN("Cannot open file " + fullPath)
+        DEBUG_PRINTLN("[SD]: Cannot open file " + fullPath);
         disconnect();
         return false;
     }
@@ -143,8 +144,9 @@ bool SD::writeToFile(const camera_fb_t* buffer, const uint16_t frameNumber)
         }
     }
 
-    DEBUG_PRINTLN("Storing file " + fullPath)
+    DEBUG_PRINTLN("[SD]: Storing file " + fullPath);
     file.write(buffer->buf, buffer->len);
+    delay(500);
     file.flush();
     file.close();
     disconnect();
